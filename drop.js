@@ -9,6 +9,6 @@ function Drop(x, y){
 	}
 
 	this.move = function(){
-		this.y = this.y - 1;
+		this.y = this.y - 4;
 	}
 }
