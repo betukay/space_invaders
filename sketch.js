@@ -7,7 +7,7 @@ function setup() {
 	ship = new Ship();
 	// drop = new Drop(width/2, height/2);
 	for (var i = 0; i < 6; i++) {
-		flowers[i] = new Flower(i*80+80, 20);
+		flowers[i] = new Flower(i*80+80, 40);
 	}
 }
 
@@ -18,16 +18,26 @@ function draw() {
 	for (var i = 0; i < drops.length; i++) {
 		drops[i].show();
 		drops[i].move();
+
+		for (var j = 0; j < flowers.length; j++) {
+			if(drops[i].hits(flowers[j])) {
+				flowers[j].grow();
+				drops[i].evaporate();
+				console.log("hits");
+			}
+		}
 	}
 
 	for (var i = 0; i < flowers.length; i++) {
 		flowers[i].show();
 	}
+
+	for (var i = drops.length; i >= 0; i--) {
+		if(drops[i].toDelete){
+			drops.splice(i, 1);
+		}
+	}
 }
-
-
-
-
 
 function keyPressed() {
 	if (key === ' ') {
