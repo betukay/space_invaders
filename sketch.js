@@ -14,6 +14,7 @@ function setup() {
 function draw() {
 	background(51);
 	ship.show();
+	ship.move();
 
 	for (var i = 0; i < drops.length; i++) {
 		drops[i].show();
@@ -23,19 +24,36 @@ function draw() {
 			if(drops[i].hits(flowers[j])) {
 				flowers[j].grow();
 				drops[i].evaporate();
-				console.log("hits");
 			}
 		}
 	}
 
+	var edge = false;
+
 	for (var i = 0; i < flowers.length; i++) {
 		flowers[i].show();
+		flowers[i].move();
+		if (flowers[i].x > width || flowers[i].x < 0) {
+			edge = true;
+		}
 	}
 
-	for (var i = drops.length; i >= 0; i--) {
+	if (edge) {
+		for (var i = 0; i < flowers.length; i++) {
+			flowers[i].shiftDown();
+		}
+	}
+
+	for (var i = drops.length-1; i >= 0; i--) {
 		if(drops[i].toDelete){
 			drops.splice(i, 1);
 		}
+	}
+}
+
+function keyReleased() {
+	if (key != ' ') {
+		ship.setDir(0);
 	}
 }
 
@@ -46,8 +64,8 @@ function keyPressed() {
 	}
 
 	if (keyCode === RIGHT_ARROW) {
-		ship.move(1);
+		ship.setDir(1);
 	} else if (keyCode === LEFT_ARROW) {
-		ship.move(-1);
+		ship.setDir(-1);
 	}
 }
